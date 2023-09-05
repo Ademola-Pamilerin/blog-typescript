@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  db:
+    image: "postgres:alpine"
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=ademola123
+      - POSTGRES_USER=ademola
+      - POSTGRES_DB=blog
+  server:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./
+    volumes:
+      - /app/node_modules
+      - .:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+    environment:
+      - PGUSER=ademola
+      - PGHOST=db
+      - PGDATABASE=blog
+      - PGPASSWORD=ademola123
+      - PGPORT=5432
+      - JWT_SECRET=mysecretkey
