@@ -28,7 +28,9 @@ const UserController = {
         },
       });
       if (user) {
-        return next(new GeneralError("Account already exist for this user"));
+        return next(
+          new GeneralError("Account already exist for this user", 400)
+        );
       }
       user = new User({ email, password: hashedPassword });
       await user.save();
@@ -38,7 +40,7 @@ const UserController = {
       }
       res.status(200).json({ message: "User created successfully", token });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   loginUser: async (req: Request, res: Response, next: NextFunction) => {
@@ -59,12 +61,12 @@ const UserController = {
         },
       });
       if (!user) {
-        return next(new GeneralError("invalid email or password"));
+        return next(new GeneralError("invalid email or password", 405));
       }
       const { password: hashedPassword } = user.dataValues;
       const isMatch = await Password.compare(hashedPassword, password);
       if (!isMatch) {
-        return next(new GeneralError("invalid email or password"));
+        return next(new GeneralError("invalid email or password", 405));
       }
 
       const token = jwtProvider({ email, id: user.dataValues.id });
@@ -76,15 +78,14 @@ const UserController = {
         .status(200)
         .json({ message: "User AUthenticated successfully", token: token });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   currentUser: (req: Request, res: Response, next: NextFunction) => {
     try {
       res.status(200).json({ currentUser: req.currentUser });
     } catch (error: any) {
-      const errorVal = new RequestError(error.message);
-      throw errorVal;
+      res.status(500).json({ message: { message: error.message } });
     }
   },
 };

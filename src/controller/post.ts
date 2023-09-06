@@ -21,7 +21,7 @@ const postController = {
       await newPost.save();
       res.status(200).json({ message: "successfully created a post" });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   getAllPost: async (req: Request, res: Response, next: NextFunction) => {
@@ -34,9 +34,9 @@ const postController = {
           ["createdAt", sort === "desc" || sort === "-1" ? "DESC" : "ASC"],
         ],
       });
-      res.status(200).json({ posts: posts });
+      res.status(200).json({ posts: posts.rows, totalNumber: posts.count });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   getSinglePost: async (req: Request, res: Response, next: NextFunction) => {
@@ -46,11 +46,11 @@ const postController = {
       const post = await Post.findOne({ where: { id: parseInt(id) } });
 
       if (!post) {
-        return next(new GeneralError("Post not found"));
+        return next(new GeneralError("Post not found", 404));
       }
       res.status(200).json({ message: post });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   editPost: async (req: Request, res: Response, next: NextFunction) => {
@@ -67,12 +67,15 @@ const postController = {
       const { id } = req.params;
       let post = await Post.findOne({ where: { id: parseInt(id) } });
       if (!post) {
-        return next(new GeneralError("Post not found"));
+        return next(new GeneralError("Post not found", 404));
       }
       if (req.currentUser) {
         if (parseInt(req.currentUser.id) !== post.author) {
           return next(
-            new GeneralError("You're are not allowed to perform this action")
+            new GeneralError(
+              "You're are not allowed to perform this action",
+              403
+            )
           );
         }
       }
@@ -80,7 +83,7 @@ const postController = {
       await post.save();
       res.status(200).json({ message: "Post updated successfully" });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   deletePost: async (req: Request, res: Response, next: NextFunction) => {
@@ -88,19 +91,22 @@ const postController = {
       const { id } = req.params;
       let post = await Post.findOne({ where: { id: parseInt(id) } });
       if (!post) {
-        return next(new GeneralError("Post not found"));
+        return next(new GeneralError("Post not found", 404));
       }
       if (req.currentUser) {
         if (parseInt(req.currentUser.id) !== post.author) {
           return next(
-            new GeneralError("You're are not allowed to perform this action")
+            new GeneralError(
+              "You're are not allowed to perform this action",
+              403
+            )
           );
         }
       }
       await post.destroy();
       res.status(200).json({ message: "Successfully delete the post" });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
   searchRoute: async (req: Request, res: Response, next: NextFunction) => {
@@ -120,9 +126,9 @@ const postController = {
           ["createdAt", sort === "desc" || sort === "-1" ? "DESC" : "ASC"],
         ],
       });
-      res.status(200).json({ posts });
+      res.status(200).json({ posts: posts.rows, totalNumber: posts.count });
     } catch (error: any) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: { message: error.message } });
     }
   },
 };

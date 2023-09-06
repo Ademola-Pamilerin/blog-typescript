@@ -1,10 +1,10 @@
 import BaseError from "./base-error";
 
 class GeneralError extends BaseError {
-  constructor(private message: string) {
+  constructor(private message: string, private code: number) {
     super();
   }
-  statusCode = 400;
+  statusCode = this.code;
   resolver = () => {
     return [{ message: this.message }];
   };
