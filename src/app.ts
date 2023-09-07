@@ -1,6 +1,6 @@
 import express from "express";
 import NotFound from "./errors/notFound-error";
-import ErrorMiddleware from "./middleware/error-middleware";
+import ErrorMiddleware from "./controller/middleware/error-middleware";
 import userRouter from "./routes/user";
 import session, { Session } from "express-session";
 import cors from "cors";
@@ -48,7 +48,7 @@ app.use("*", () => {
 });
 app.use(ErrorMiddleware);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   if (!process.env.JWT_SECRET) {
     throw new Error("JWT SECRET IS REQUIRED");
   }

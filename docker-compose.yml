@@ -25,3 +25,5 @@ services:
       - PGPASSWORD=ademola123
       - PGPORT=5432
       - JWT_SECRET=mysecretkey
+      - ENVIRONMENT=development
+      - PORT=3000

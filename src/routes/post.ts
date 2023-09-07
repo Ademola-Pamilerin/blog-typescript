@@ -2,7 +2,7 @@ import { Router } from "express";
 import { body } from "express-validator";
 import postController from "../controller/post";
 
-import RequireAuth from "../middleware/require-auth";
+import RequireAuth from "../controller/middleware/require-auth";
 
 const postRouter = Router();
 

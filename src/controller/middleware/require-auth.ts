@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import GeneralError from "../errors/general-error";
-import { jwtVerifier } from "../shared/token";
-import User from "../model/user-model";
+import GeneralError from "../../errors/general-error";
+import { jwtVerifier } from "../../shared/token";
+import User from "../../model/user-model";
 
 const RequireAuth = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.session?.jwt) {

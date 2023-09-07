@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import UserController from "../controller/user";
-import RequireAuth from "../middleware/require-auth";
+import RequireAuth from "../controller/middleware/require-auth";
 
 const userRouter = Router();
 
@@ -43,5 +43,6 @@ userRouter.put(
 );
 
 userRouter.get("/user", RequireAuth, UserController.currentUser);
+userRouter.get("/logout", RequireAuth, UserController.logoutUser);
 
 export default userRouter;

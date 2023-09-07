@@ -1,0 +1,10 @@
+create a new user: https://blog-luma.onrender.com/api/users/register, METHOD: POST
+log a user in: https://blog-luma.onrender.com/api/users/login, METHOD: PUT
+logout a user: https://blog-luma.onrender.com/api/users/logout, METHOD:GET
+
+create a blog post: https://blog-luma.onrender.com/api/posts/new, METHOD: POST
+Edit a blog post: https://blog-luma.onrender.com/api/posts/edit/id, METHOD: PUT
+Get all blog post: https://blog-luma.onrender.com/api/posts/all, METHOD:GET, QUERIES:[PAGE:NUMBER, SORT:[[asc,1],[desc,-1,]]]
+Get single Post: https://blog-luma.onrender.com/api/posts/all/id METHOD: GET
+Delete a Post: https://blog-luma.onrender.com/api/posts/id METHOD: DELETE
+search a post: https://blog-luma.onrender.com/api/posts/serach, METHOD:GET, QUERIES:[PAGE:NUMBER, SORT:[[asc,1],[desc,-1,]],KEYWORD:STRING]

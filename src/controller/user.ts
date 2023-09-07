@@ -88,6 +88,19 @@ const UserController = {
       res.status(500).json({ message: { message: error.message } });
     }
   },
+  logoutUser: (req: Request, res: Response, next: NextFunction) => {
+    try {
+      req.session?.destroy((error) => {
+        if (error) {
+          throw new GeneralError("Something Went wrong", 500);
+        }
+      });
+      res.clearCookie("blog");
+      res.status(200).json({ message: "successfully logged out" });
+    } catch (error: any) {
+      res.status(500).json({ message: { message: error.message } });
+    }
+  },
 };
 
 export default UserController;
